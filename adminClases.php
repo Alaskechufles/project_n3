@@ -1,3 +1,9 @@
+<?php
+session_start();
+if (!($_SESSION["data"]["rango"] === "1")) {
+    header("Location: noAutorizado.php");
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -31,7 +37,7 @@
                     </h2>
                 </div>
                 <div class="p-6 flex flex-col gap-5">
-                    <a href=""
+                    <a href="/adminPermisos.php"
                         class="text-[#C6D2D2] text-[22px] flex gap-4 justify-start items-center hover:bg-[#1a5086] h-[50px] pl-5 rounded-lg">
                         <div>
                             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
@@ -42,7 +48,7 @@
                         </div>
                         <p>Permisos</p>
                     </a>
-                    <a href=""
+                    <a href="/adminMaestros.php"
                         class="text-[#C6D2D2] text-[22px] flex gap-4 justify-start items-center hover:bg-[#1a5086] h-[50px] pl-5 rounded-lg">
                         <div>
                             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
@@ -55,7 +61,7 @@
                         </div>
                         <p>Maestros</p>
                     </a>
-                    <a href=""
+                    <a href="/adminAlumnos.php"
                         class="text-[#C6D2D2] text-[22px] flex gap-4 justify-start items-center hover:bg-[#1a5086] h-[50px] pl-5 rounded-lg">
                         <div>
                             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
@@ -68,7 +74,7 @@
                         </div>
                         <p>Alumnos</p>
                     </a>
-                    <a href=""
+                    <a href="/adminClases.php"
                         class="text-[#C6D2D2] text-[22px] flex gap-4 justify-start items-center hover:bg-[#1a5086] h-[50px] pl-5 rounded-lg">
                         <div>
                             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
@@ -109,8 +115,8 @@
             <div class="w-full flex flex-row justify-between p-4">
                 <h3 class="text-[25px] font-semibold">Lista de Clases</h3>
                 <div>
-                    <a class="text-[#70A2EE]" href="">Home</a> /
-                    <a href="">Clases</a>
+                    <a class="text-[#70A2EE]" href="/adminDashboard.php">Home</a> /
+                    <a href="/adminClases.php">Clases</a>
                 </div>
             </div>
             <div

@@ -1,3 +1,9 @@
+<?php
+session_start();
+if (!($_SESSION["data"]["rango"] === "3")) {
+    header("Location: noAutorizado.php");
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
