@@ -1,8 +1,15 @@
 <?php
 session_start();
+require("connection.php");
 if (!($_SESSION["data"]["rango"] === "1")) {
     header("Location: noAutorizado.php");
 }
+$nombreCompleto = $_SESSION["data"]["nombre_usuario"] . " " . $_SESSION["data"]["apellido_usuario"];
+
+$dataMaestros = $mysqli->query("SELECT * FROM usuarios INNER JOIN usuario_curso_maestro ON usuarios.id_usuario = usuario_curso_maestro.id_usuario INNER JOIN cursos ON usuario_curso_maestro.id_curso = cursos.id_curso;");
+
+/* $dataCursosSinMaestro = $mysqli->query("SELECT cursos.nombre_curso FROM cursos LEFT JOIN usuario_curso_maestro ON cursos.id_curso = usuario_curso_maestro.id_curso WHERE usuario_curso_maestro.id_curso IS NULL;"); */
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -102,7 +109,7 @@ if (!($_SESSION["data"]["rango"] === "1")) {
                 </div>
 
                 <div class="flex-row flex items-center gap-4">
-                    <h3>Administrator</h3>
+                    <h3><?= $nombreCompleto ?></h3>
                     <div>
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                             class="bi bi-chevron-down" viewBox="0 0 16 16">
@@ -218,16 +225,29 @@ if (!($_SESSION["data"]["rango"] === "1")) {
                         </tr>
                     </thead>
                     <tbody>
+
+                        <?php
+                        while ($fila = $dataMaestros->fetch_assoc()) {
+                            $id = $fila["id_usuario"];
+                            $nombre = $fila["nombre_usuario"];
+                            $apellido = $fila["apellido_usuario"];
+                            $nombreMaestro = $fila["nombre_usuario"] . " " . $fila["apellido_usuario"];
+                            $correo = $fila["correo_usuario"];
+                            $direccion = $fila["direccion_usuario"];
+                            $fecha = $fila["fecha_nacimiento_usuario"];
+                            $curso = $fila["nombre_curso"];
+                            $id_curso = $fila["id_curso"];
+                        ?>
                         <tr class=" text-center border-b  border-[#2c7fd2]">
-                            <td class=" w-1/12">1</td>
-                            <td class=" w-1/6">Diego Huarsaya</td>
-                            <td class=" w-1/6">asd@asd</td>
-                            <td class=" w-1/6">123 Naranja</td>
-                            <td class=" w-1/6">1998-5-27</td>
-                            <td class=" w-1/6">Programación</td>
+                            <td class=" w-1/12"><?= $id ?></td>
+                            <td class=" w-1/6"><?= $nombreMaestro ?></td>
+                            <td class=" w-1/6"><?= $correo ?></td>
+                            <td class=" w-1/6"><?= $direccion ?></td>
+                            <td class=" w-1/6"><?= $fecha ?></td>
+                            <td class=" w-1/6"><?= $curso ?></td>
                             <td class=" w-full h-[30px] flex justify-center items-center">
-                                <button data-modal-target="authentication-modal"
-                                    data-modal-toggle="authentication-modal"
+                                <button data-modal-target="authentication-modal<?= $id ?>"
+                                    data-modal-toggle="authentication-modal<?= $id ?>"
                                     class=" text-[#4A93A1] flex justify-center items-center">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                         class="bi bi-pencil-square" viewBox="0 0 16 16">
@@ -238,14 +258,14 @@ if (!($_SESSION["data"]["rango"] === "1")) {
                                     </svg>
                                 </button>
                                 <!-- Main modal -->
-                                <div id="authentication-modal" tabindex="-1" aria-hidden="true"
+                                <div id="authentication-modal<?= $id ?>" tabindex="-1" aria-hidden="true"
                                     class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
                                     <div class="relative w-full max-w-md max-h-full">
                                         <!-- Modal content -->
                                         <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
                                             <button type="button"
                                                 class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                                                data-modal-hide="authentication-modal">
+                                                data-modal-hide="authentication-modal<?= $id ?>">
                                                 <svg class="w-3 h-3" aria-hidden="true"
                                                     xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
                                                     <path stroke="currentColor" stroke-linecap="round"
@@ -258,36 +278,41 @@ if (!($_SESSION["data"]["rango"] === "1")) {
                                                 <h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">
                                                     Editar Maestro
                                                 </h3>
-                                                <form class="space-y-6" action="#">
+                                                <form class="space-y-6" action="adminMaestrosEdit.php" method="post">
                                                     <div>
                                                         <label for="email_edit"
                                                             class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                                                             Correo Electronico</label>
-                                                        <input type="email" name="email_edit" id="email_edit"
+                                                        <input value="<?= $correo ?>" type="email" name="email_edit"
+                                                            id="email_edit"
                                                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                                                             placeholder="Ingresa email" required>
                                                         <label for="nombre_edit"
                                                             class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                                                             Nombre(s)</label>
-                                                        <input type="text" name="nombre_edit" id="nombre_edit"
+                                                        <input value="<?= $nombre ?>" type="text" name="nombre_edit"
+                                                            id="nombre_edit"
                                                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                                                             placeholder="Ingresa nombre(s)" required>
                                                         <label for="apellido_edit"
                                                             class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                                                             Apellido(s)</label>
-                                                        <input type="text" name="apellido_edit" id="apellido_edit"
+                                                        <input value="<?= $apellido ?>" type="text" name="apellido_edit"
+                                                            id="apellido_edit"
                                                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                                                             placeholder="Ingresa apellido(s)" required>
                                                         <label for="direccion_edit"
                                                             class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                                                             Dirección</label>
-                                                        <input type="text" name="direccion_edit" id="direccion_edit"
+                                                        <input value="<?= $direccion ?>" type="text"
+                                                            name="direccion_edit" id="direccion_edit"
                                                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                                                             placeholder="Ingresa la dirección" required>
                                                         <label for="nacimiento_edit"
                                                             class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                                                             Fecha de nacimiento</label>
-                                                        <input type="date" name="nacimiento_edit" id="nacimiento_edit"
+                                                        <input value="<?= $fecha ?>" type="date" name="nacimiento_edit"
+                                                            id="nacimiento_edit"
                                                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                                                             placeholder="mm/dd/yyy" required>
                                                     </div>
@@ -297,17 +322,32 @@ if (!($_SESSION["data"]["rango"] === "1")) {
                                                             Asignada</label>
                                                         <select id="clase_edit" name="clase_edit"
                                                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white">
-                                                            <option value="">Programación</option>
-                                                            <option value="">Biologia</option>
-                                                            <option value="">Astronomia</option>
+                                                            <option value="<?= $id_curso ?>"><?= $curso ?></option>
+
+                                                            <?php
+                                                                $dataCursosSinMaestro = $mysqli->query("SELECT * FROM cursos LEFT JOIN usuario_curso_maestro ON cursos.id_curso = usuario_curso_maestro.id_curso WHERE usuario_curso_maestro.id_curso IS NULL;");
+
+                                                                while ($materia = $dataCursosSinMaestro->fetch_assoc()) {
+                                                                    $cursoSinMaestro = $materia["nombre_curso"];
+                                                                    $id_cursoSM = $materia["id_curso"];
+                                                                ?>
+
+                                                            <option value="<?= $id_cursoSM ?>">
+                                                                <?= $cursoSinMaestro ?></option>
+
+                                                            <?php
+
+                                                                }
+                                                                ?>
+
                                                         </select>
                                                     </div>
                                                     <div>
                                                         <button type="button"
                                                             class="w-[100px] text-white bg-[#6C747E] hover:text-[#6C747E] hover:bg-gray-200 px-5 py-2.5 rounded-lg text-sm ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                                                            data-modal-hide="authentication-modal">Close
+                                                            data-modal-hide="authentication-modal<?= $id ?>">Close
                                                         </button>
-                                                        <button type="submit"
+                                                        <button type="submit" name="value_id" value="<?= $id ?>"
                                                             class="w-[150px] text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Guardar
                                                             cambios</button>
                                                     </div>
@@ -318,12 +358,15 @@ if (!($_SESSION["data"]["rango"] === "1")) {
                                 </div>
 
                             </td>
-            </div>
-            </tr>
 
-            </tbody>
-            </table>
-        </div>
+                        </tr>
+
+                        <?php
+                        }
+                        ?>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </main>
 </body>
