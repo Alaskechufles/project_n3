@@ -1,8 +1,13 @@
 <?php
 session_start();
+require("connection.php");
 if (!($_SESSION["data"]["rango"] === "1")) {
     header("Location: noAutorizado.php");
 }
+$nombreCompleto = $_SESSION["data"]["nombre_usuario"] . " " . $_SESSION["data"]["apellido_usuario"];
+
+$dataAlumnos = $mysqli->query("SELECT * FROM usuarios WHERE rango='3';");
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -26,7 +31,7 @@ if (!($_SESSION["data"]["rango"] === "1")) {
             </div>
             <hr />
             <div class="flex flex-col gap-3 py-4 px-8">
-                <h2 class="text-[#C6D2D2] text-[26px]">admin</h2>
+                <h2 class="text-[#C6D2D2] text-[26px]"><?= $nombreCompleto ?></h2>
                 <p class="text-[#C6D2D2] text-[26px]">Administrador</p>
             </div>
             <hr />
@@ -102,7 +107,7 @@ if (!($_SESSION["data"]["rango"] === "1")) {
                 </div>
 
                 <div class="flex-row flex items-center gap-4">
-                    <h3>Administrator</h3>
+                    <h3><?= $nombreCompleto ?></h3>
                     <div>
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                             class="bi bi-chevron-down" viewBox="0 0 16 16">
@@ -186,18 +191,7 @@ if (!($_SESSION["data"]["rango"] === "1")) {
                                             placeholder="mm/dd/yyyy" required>
 
                                     </div>
-                                    <!-- <div>
-                                        <label for="maestro"
-                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Maestros
-                                            disponibles para la clase
-                                        </label>
-                                        <select name="maestro" id="maestro"
-                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white">
-                                            <option value="">Harold Zuñiga</option>
-                                            <option value="">Isaias Carazas</option>
 
-                                        </select>
-                                    </div> -->
                                     <div class=" flex flex-row w-full justify-end gap-5">
                                         <button type="button"
                                             class="w-[100px] text-white bg-[#6C747E] hover:text-[#6C747E] hover:bg-gray-200 px-5 py-2.5 rounded-lg text-sm ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
@@ -226,16 +220,30 @@ if (!($_SESSION["data"]["rango"] === "1")) {
                         </tr>
                     </thead>
                     <tbody>
+
+                        <?php
+            while ($alumno = $dataAlumnos->fetch_assoc()) {
+                $id = $alumno["id_usuario"];
+                $nombre = $alumno["nombre_usuario"];
+                $apellido = $alumno["apellido_usuario"];
+                $nombreAlumno = $alumno["nombre_usuario"] . " " . $alumno["apellido_usuario"];
+                $dni = $alumno["dni_usuario"];
+                $correo = $alumno["correo_usuario"];
+                $direccion = $alumno["direccion_usuario"];
+                $fecha = $alumno["fecha_nacimiento_usuario"];
+
+
+            ?>
                         <tr class=" text-center border-b  border-[#2c7fd2]">
-                            <td class=" w-1/8">1</td>
-                            <td class=" w-1/8">72393118</td>
-                            <td class=" w-1/4">Diego Huarsaya</td>
-                            <td class=" w-1/4">alaskechufles@gmail.com</td>
-                            <td class=" w-1/4">123 Naranja</td>
-                            <td class=" w-1/4">1998-5-27</td>
+                            <td class=" w-1/12"><?= $id ?></td>
+                            <td class=" w-1/6"><?= $dni ?></td>
+                            <td class=" w-1/6"><?= $nombreAlumno ?></td>
+                            <td class=" w-1/6"><?= $correo ?></td>
+                            <td class=" w-1/6"><?= $direccion ?></td>
+                            <td class=" w-1/6"><?= $fecha ?></td>
                             <td class=" w-full h-[30px] flex justify-center items-center gap-5">
-                                <button data-modal-target="authentication-modal"
-                                    data-modal-toggle="authentication-modal"
+                                <button data-modal-target="authentication-modal<?= $id ?>"
+                                    data-modal-toggle="authentication-modal<?= $id ?>"
                                     class=" text-[#4A93A1] flex justify-center items-center">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                         class="bi bi-pencil-square" viewBox="0 0 16 16">
@@ -245,7 +253,7 @@ if (!($_SESSION["data"]["rango"] === "1")) {
                                             d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
                                     </svg>
                                 </button>
-                                <form action="">
+                                <form action="" method="">
                                     <button class=" text-red-600">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                             fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
@@ -255,14 +263,14 @@ if (!($_SESSION["data"]["rango"] === "1")) {
                                     </button>
                                 </form>
                                 <!-- Main modal -->
-                                <div id="authentication-modal" tabindex="-1" aria-hidden="true"
+                                <div id="authentication-modal<?= $id ?>" tabindex="-1" aria-hidden="true"
                                     class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
                                     <div class="relative w-full max-w-md max-h-full">
                                         <!-- Modal content -->
                                         <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
                                             <button type="button"
                                                 class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                                                data-modal-hide="authentication-modal">
+                                                data-modal-hide="authentication-modal<?= $id ?>">
                                                 <svg class="w-3 h-3" aria-hidden="true"
                                                     xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
                                                     <path stroke="currentColor" stroke-linecap="round"
@@ -281,72 +289,72 @@ if (!($_SESSION["data"]["rango"] === "1")) {
                                                             class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                                                             DNI</label>
                                                         <input type="text" name="dni_edit" id="dni_edit"
+                                                            value="<?= $dni ?>"
                                                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                                                             placeholder="Ingresa el DNI" required>
                                                         <label for="correo_edit"
                                                             class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                                                             Correo Electronico</label>
                                                         <input type="email" name="correo_edit" id="correo_edit"
+                                                            value="<?= $correo ?>"
                                                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                                                             placeholder="Ingresa el email" required>
                                                         <label for="nombre_edit"
                                                             class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                                                             Nombre(s)</label>
                                                         <input type="text" name="nombre_edit" id="nombre_edit"
+                                                            value="<?= $nombre ?>"
                                                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                                                             placeholder="Ingresa el nombre(s)" required>
                                                         <label for="apellido_edit"
                                                             class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                                                             Apellido(s)</label>
                                                         <input type="text" name="apellido_edit" id="apellido_edit"
+                                                            value="<?= $apellido ?>"
                                                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                                                             placeholder="Ingresa el apellido(s)" required>
                                                         <label for="direccion_edit"
                                                             class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                                                             Dirección</label>
                                                         <input type="text" name="direccion_edit" id="direccion_edit"
+                                                            value="<?= $direccion ?>"
                                                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                                                             placeholder="Ingresa la dirección" required>
                                                         <label for="nacimiento_edit"
                                                             class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                                                             Fecha de nacimiento</label>
                                                         <input type="date" name="nacimiento_edit" id="nacimiento_edit"
+                                                            value="<?= $fecha ?>"
                                                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                                                             placeholder="mm/dd/yyyy" required>
 
                                                     </div>
-                                                    <<!-- div>
-                                                        <label for="clase_edit"
-                                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Maestro
-                                                            Asignada</label>
-                                                        <select id="clase_edit" name="clase_edit"
-                                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white">
-                                                            <option value="">Harold Zuñiga</option>
-                                                            <option value="">Isaias Carazas</option>
 
-                                                        </select>
-                                            </div> -->
-                                            <div>
-                                                <button type="button"
-                                                    class="w-[100px] text-white bg-[#6C747E] hover:text-[#6C747E] hover:bg-gray-200 px-5 py-2.5 rounded-lg text-sm ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                                                    data-modal-hide="authentication-modal">Close
-                                                </button>
-                                                <button type="submit"
-                                                    class="w-[150px] text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Guardar
-                                                    cambios</button>
+                                                    <div>
+                                                        <button type="button"
+                                                            class="w-[100px] text-white bg-[#6C747E] hover:text-[#6C747E] hover:bg-gray-200 px-5 py-2.5 rounded-lg text-sm ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                                                            data-modal-hide="authentication-modal<?= $id ?>">Close
+                                                        </button>
+                                                        <button type="submit" value="<?= $id ?>"
+                                                            class="w-[150px] text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Guardar
+                                                            cambios</button>
+                                                    </div>
+                                                </form>
                                             </div>
-                                            </form>
                                         </div>
                                     </div>
                                 </div>
+
+                            </td>
             </div>
+            </tr>
+            <?php
+            }
 
-            </td>
-        </div>
-        </tr>
+    ?>
 
-        </tbody>
-        </table>
+            </tbody>
+            </table>
         </div>
         </div>
     </main>
