@@ -10,8 +10,12 @@ $direccion_nuevo = $_POST["direccion_edit"];
 $nacimiento_nuevo = $_POST["nacimiento_edit"];
 $clase_nuevo = $_POST["clase_edit"];
 
+$query = "UPDATE usuarios SET nombre_usuario='$nombre_nuevo', apellido_usuario='$apellido_nuevo',correo_usuario='$correo_nuevo',direccion_usuario='$direccion_nuevo',fecha_nacimiento_usuario='$nacimiento_nuevo'  WHERE id_usuario = '$id'; ";
+
+$query2 = "UPDATE usuario_curso_maestro SET id_curso_maestro='$clase_nuevo' WHERE id_usuario_maestro ='$id'; ";
+
+$cambioTablaMaestros = $mysqli->query($query);
+$cambioTablaMaestrosCursos = $mysqli->query($query2);
 
 
-
-
-/* $query = "UPDATE usuarios SET nombre_usuario='$nombre_nuevo', apellido_usuario='$apellido_nuevo',correo_usuario='$correo_nuevo',direccion_usuario='$direccion_nuevo',fecha_nacimiento_usuario='$nacimiento_nuevo'  WHERE id_usuario = '$id' UPDATE usuario_curso_maestro SET id_curso='$clase_nuevo' WHERE id_usuario ='$id'; "; */
+header("Location: adminMaestros.php");
