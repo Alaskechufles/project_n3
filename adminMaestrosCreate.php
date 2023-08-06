@@ -10,7 +10,7 @@ $direccion = $_POST["direccion"];
 $nacimiento = $_POST["nacimiento"];
 $clase = $_POST["clase"];
 
-$query = "INSERT INTO usuarios(nombre_usuario,apellido_usuario,correo_usuario,direccion_usuario,fecha_nacimiento_usuario) VALUES ('$nombre','$apellido','$correo','$direccion','$nacimiento')";
+$query = "INSERT INTO usuarios(nombre_usuario,apellido_usuario,correo_usuario,direccion_usuario,fecha_nacimiento_usuario,rango,contra_usuario) VALUES ('$nombre','$apellido','$correo','$direccion','$nacimiento','2','$nombre')";
 
 $agregarMaestro = $mysqli->query($query);
 
