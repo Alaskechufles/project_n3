@@ -1,7 +1,7 @@
 <?php
 require("connection.php");
 
-$id = $_POST["value_id"];
+/* $id = $_POST["value_id"]; */
 
 $correo = $_POST["email"];
 $nombre = $_POST["nombre"];
@@ -9,6 +9,13 @@ $apellido = $_POST["apellido"];
 $direccion = $_POST["direccion"];
 $nacimiento = $_POST["nacimiento"];
 $clase = $_POST["clase"];
+
+var_dump(gettype($clase));
+var_dump($clase);
+
+if ($_POST["clase"] === "ninguna") {
+    $clase = null;
+}
 
 $query = "INSERT INTO usuarios(nombre_usuario,apellido_usuario,correo_usuario,direccion_usuario,fecha_nacimiento_usuario,rango,contra_usuario) VALUES ('$nombre','$apellido','$correo','$direccion','$nacimiento','2','$nombre')";
 
@@ -22,8 +29,12 @@ $datosMaestroNuevo = $maestroNuevo->fetch_assoc();
 
 $idMaestroNuevo = $datosMaestroNuevo["id_usuario"];
 
-$query3 = "INSERT INTO usuario_curso_maestro(id_usuario_maestro,id_curso_maestro) VALUES ('$idMaestroNuevo','$clase')";
+if ($clase !== null) {
 
-$asignarCurso = $mysqli->query($query3);
+    $query3 = "INSERT INTO usuario_curso_maestro(id_usuario_maestro,id_curso_maestro) VALUES ('$idMaestroNuevo','$clase')";
+
+    $asignarCurso = $mysqli->query($query3);
+}
+
 
 header("Location: adminMaestros.php");

@@ -6,7 +6,9 @@ if (!($_SESSION["data"]["rango"] === "1")) {
 }
 $nombreCompleto = $_SESSION["data"]["nombre_usuario"] . " " . $_SESSION["data"]["apellido_usuario"];
 
-$dataMaestros = $mysqli->query("SELECT * FROM usuarios INNER JOIN usuario_curso_maestro ON usuarios.id_usuario = usuario_curso_maestro.id_usuario_maestro INNER JOIN cursos ON usuario_curso_maestro.id_curso_maestro = cursos.id_curso;");
+/* $dataMaestros = $mysqli->query("SELECT * FROM usuarios INNER JOIN usuario_curso_maestro ON usuarios.id_usuario = usuario_curso_maestro.id_usuario_maestro INNER JOIN cursos ON usuario_curso_maestro.id_curso_maestro = cursos.id_curso;"); */
+
+$dataMaestros = $mysqli->query("SELECT * FROM usuarios LEFT JOIN usuario_curso_maestro ON usuarios.id_usuario = usuario_curso_maestro.id_usuario_maestro LEFT JOIN cursos ON usuario_curso_maestro.id_curso_maestro = cursos.id_curso WHERE rango='2';")
 
 /* $dataCursosSinMaestro = $mysqli->query("SELECT cursos.nombre_curso FROM cursos LEFT JOIN usuario_curso_maestro ON cursos.id_curso = usuario_curso_maestro.id_curso WHERE usuario_curso_maestro.id_curso IS NULL;"); */
 
@@ -150,6 +152,8 @@ $dataMaestros = $mysqli->query("SELECT * FROM usuarios INNER JOIN usuario_curso_
                                         <label for="clase" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Clase
                                             asignada</label>
                                         <select name="clase" id="clase" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white">
+                                            <option value="ninguna">Ninguna
+                                            </option>
                                             <?php
                                             $dataCursosSinMaestro = $mysqli->query("SELECT * FROM cursos LEFT JOIN usuario_curso_maestro ON cursos.id_curso = usuario_curso_maestro.id_curso_maestro WHERE usuario_curso_maestro.id_curso_maestro IS NULL;");
 
