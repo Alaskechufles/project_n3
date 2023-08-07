@@ -4,6 +4,7 @@ require("connection.php");
 $idEliminar = $_POST["eliminar"];
 
 
+
 $query = "DELETE FROM usuario_curso_maestro WHERE id_usuario_maestro='$idEliminar'";
 
 $eliminarMaestro = $mysqli->query($query);
