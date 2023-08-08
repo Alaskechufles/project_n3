@@ -1,23 +1,29 @@
 <?php
 require("connection.php");
-
+$idCursoSelect = $_POST["id_curso"];
 $nombreNuevo = $_POST["clase_edit"];
 $idMaestro = $_POST["maestro_edit"];
 
-$query = "UPDATE cursos SET nombre_curso='$nombreNuevo'";
+var_dump($idMaestro);
 
-/* $agregarCurso= $mysqli->query($query); */
+$query = "UPDATE cursos SET nombre_curso='$nombreNuevo' WHERE id_curso='$idCursoSelect'";
 
-$query2 = "SELECT * FROM cursos WHERE nombre_curso='$nombreNuevo'";
+$agregarCurso = $mysqli->query($query);
 
-$traerDatosClase = $mysqli->query($query2);
+if ($idMaestro !== "ninguno") {
+    $query2 = "SELECT * FROM cursos WHERE nombre_curso='$nombreNuevo'";
 
-$datosClase = $traerDatosClase->fetch_assoc();
+    $traerDatosClase = $mysqli->query($query2);
 
-$idCurso = $datosClase["id_curso"];
+    $datosClase = $traerDatosClase->fetch_assoc();
 
-$query3 = "INSERT INTO usuario_curso_maestro (id,id_usuario_maestro,id_curso_maestro) VALUES (NULL,'$idMaestro','$idCurso')";
+    $idCurso = $datosClase["id_curso"];
 
-$asignarMaestro = $mysqli->query($query3);
+    $query3 = "INSERT INTO usuario_curso_maestro (id,id_usuario_maestro,id_curso_maestro) VALUES (NULL,'$idMaestro','$idCurso')";
+
+    $asignarMaestro = $mysqli->query($query3);
+}
+
+
 
 header("Location: adminClases.php");
