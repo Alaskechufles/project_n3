@@ -3,6 +3,7 @@ session_start();
 if (!($_SESSION["data"]["rango"] === "3")) {
     header("Location: noAutorizado.php");
 }
+$nombreCompleto = $_SESSION["data"]["nombre_usuario"] . " " . $_SESSION["data"]["apellido_usuario"];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -26,8 +27,8 @@ if (!($_SESSION["data"]["rango"] === "3")) {
             </div>
             <hr />
             <div class="flex flex-col gap-3 py-4 px-8">
-                <h2 class="text-[#C6D2D2] text-[26px]">Alumno</h2>
-                <p class="text-[#C6D2D2] text-[26px]">Diego Huarsaya</p>
+                <h2 class="text-[#C6D2D2] text-[26px]"><?= $nombreCompleto ?></h2>
+                <p class="text-[#C6D2D2] text-[26px]">Alumno</p>
             </div>
             <hr />
             <div class="">
@@ -39,7 +40,7 @@ if (!($_SESSION["data"]["rango"] === "3")) {
                 <div class="p-6 flex flex-col gap-5">
 
 
-                    <a href=""
+                    <a href="alumnoCalificaciones.php"
                         class="text-[#C6D2D2] text-[14px] flex gap-4 justify-start items-center hover:bg-[#1a5086] h-[50px] pl-5 rounded-lg">
                         <div>
                             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
@@ -52,7 +53,7 @@ if (!($_SESSION["data"]["rango"] === "3")) {
                         </div>
                         <p>Ver Calificaciones</p>
                     </a>
-                    <a href=""
+                    <a href="alumnoClases.php"
                         class="text-[#C6D2D2] text-[14px] flex gap-4 justify-start items-center hover:bg-[#1a5086] h-[50px] pl-5 rounded-lg">
                         <div>
                             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
@@ -80,15 +81,39 @@ if (!($_SESSION["data"]["rango"] === "3")) {
                     <h3>Home</h3>
                 </div>
 
-                <div class="flex-row flex items-center gap-4">
-                    <h3>Diego Huarsaya</h3>
-                    <div>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                            class="bi bi-chevron-down" viewBox="0 0 16 16">
-                            <path fill-rule="evenodd"
-                                d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z" />
-                        </svg>
+                <div>
+
+                    <button id="dropdownDefaultButton" data-dropdown-toggle="dropdown"
+                        class="text-gray-700 bg-white hover:bg-[#C6D2D2] focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                        type="button">
+                        <h3><?= $nombreCompleto ?></h3>
+                        <div class=" ml-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-chevron-down" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd"
+                                    d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z" />
+                            </svg>
+                        </div>
+                    </button>
+                    <!-- Dropdown menu -->
+                    <div id="dropdown"
+                        class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
+                        <ul class="py-2 text-sm text-gray-700 dark:text-gray-200"
+                            aria-labelledby="dropdownDefaultButton">
+
+                            <li>
+                                <a href="editarDatos.php"
+                                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Editar
+                                    Perfil</a>
+                            </li>
+                            <li>
+                                <a href="logOut.php"
+                                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Log
+                                    out</a>
+                            </li>
+                        </ul>
                     </div>
+
                 </div>
             </nav>
             <div class="w-full flex flex-row justify-between p-4">

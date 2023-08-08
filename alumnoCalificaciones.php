@@ -1,3 +1,12 @@
+<?php
+session_start();
+require("connection.php");
+if (!($_SESSION["data"]["rango"] === "3")) {
+    header("Location: noAutorizado.php");
+}
+$nombreCompleto = $_SESSION["data"]["nombre_usuario"] . " " . $_SESSION["data"]["apellido_usuario"];
+$idAlumno = $_SESSION["data"]["id_usuario"];
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -20,8 +29,8 @@
             </div>
             <hr />
             <div class="flex flex-col gap-3 py-4 px-8">
-                <h2 class="text-[#C6D2D2] text-[26px]">Alumno</h2>
-                <p class="text-[#C6D2D2] text-[26px]">Diego Huarsaya</p>
+                <h2 class="text-[#C6D2D2] text-[26px]"><?= $nombreCompleto ?></h2>
+                <p class="text-[#C6D2D2] text-[26px]">Alumno</p>
             </div>
             <hr />
             <div class="">
@@ -33,26 +42,19 @@
                 <div class="p-6 flex flex-col gap-5">
 
 
-                    <a href=""
-                        class="text-[#C6D2D2] text-[14px] flex gap-4 justify-start items-center hover:bg-[#1a5086] h-[50px] pl-5 rounded-lg">
+                    <a href="alumnoCalificaciones.php" class="text-[#C6D2D2] text-[14px] flex gap-4 justify-start items-center hover:bg-[#1a5086] h-[50px] pl-5 rounded-lg">
                         <div>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
-                                class="bi bi-file-earmark-check" viewBox="0 0 16 16">
-                                <path
-                                    d="M10.854 7.854a.5.5 0 0 0-.708-.708L7.5 9.793 6.354 8.646a.5.5 0 1 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0l3-3z" />
-                                <path
-                                    d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z" />
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-file-earmark-check" viewBox="0 0 16 16">
+                                <path d="M10.854 7.854a.5.5 0 0 0-.708-.708L7.5 9.793 6.354 8.646a.5.5 0 1 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0l3-3z" />
+                                <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z" />
                             </svg>
                         </div>
                         <p>Ver Calificaciones</p>
                     </a>
-                    <a href=""
-                        class="text-[#C6D2D2] text-[14px] flex gap-4 justify-start items-center hover:bg-[#1a5086] h-[50px] pl-5 rounded-lg">
+                    <a href="alumnoClases.php" class="text-[#C6D2D2] text-[14px] flex gap-4 justify-start items-center hover:bg-[#1a5086] h-[50px] pl-5 rounded-lg">
                         <div>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
-                                class="bi bi-easel2" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd"
-                                    d="M8 0a.5.5 0 0 1 .447.276L8.81 1h4.69A1.5 1.5 0 0 1 15 2.5V11h.5a.5.5 0 0 1 0 1h-2.86l.845 3.379a.5.5 0 0 1-.97.242L12.11 14H3.89l-.405 1.621a.5.5 0 0 1-.97-.242L3.36 12H.5a.5.5 0 0 1 0-1H1V2.5A1.5 1.5 0 0 1 2.5 1h4.691l.362-.724A.5.5 0 0 1 8 0ZM2 11h12V2.5a.5.5 0 0 0-.5-.5h-11a.5.5 0 0 0-.5.5V11Zm9.61 1H4.39l-.25 1h7.72l-.25-1Z" />
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-easel2" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M8 0a.5.5 0 0 1 .447.276L8.81 1h4.69A1.5 1.5 0 0 1 15 2.5V11h.5a.5.5 0 0 1 0 1h-2.86l.845 3.379a.5.5 0 0 1-.97.242L12.11 14H3.89l-.405 1.621a.5.5 0 0 1-.97-.242L3.36 12H.5a.5.5 0 0 1 0-1H1V2.5A1.5 1.5 0 0 1 2.5 1h4.691l.362-.724A.5.5 0 0 1 8 0ZM2 11h12V2.5a.5.5 0 0 0-.5-.5h-11a.5.5 0 0 0-.5.5V11Zm9.61 1H4.39l-.25 1h7.72l-.25-1Z" />
                             </svg>
                         </div>
                         <p>Administra tus Clases</p>
@@ -65,24 +67,38 @@
             <nav class="flex flex-row bg-white w-full justify-between p-5">
                 <div class="flex flex-row items-center gap-4">
                     <div>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                            class="bi bi-list" viewBox="0 0 16 16">
-                            <path fill-rule="evenodd"
-                                d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z" />
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z" />
                         </svg>
                     </div>
                     <h3>Home</h3>
                 </div>
 
-                <div class="flex-row flex items-center gap-4">
-                    <h3>Diego Huarsaya</h3>
-                    <div>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                            class="bi bi-chevron-down" viewBox="0 0 16 16">
-                            <path fill-rule="evenodd"
-                                d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z" />
-                        </svg>
+                <div>
+
+                    <button id="dropdownDefaultButton" data-dropdown-toggle="dropdown" class="text-gray-700 bg-white hover:bg-[#C6D2D2] focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
+                        <h3><?= $nombreCompleto ?></h3>
+                        <div class=" ml-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-down" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z" />
+                            </svg>
+                        </div>
+                    </button>
+                    <!-- Dropdown menu -->
+                    <div id="dropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
+                        <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
+
+                            <li>
+                                <a href="editarDatos.php" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Editar
+                                    Perfil</a>
+                            </li>
+                            <li>
+                                <a href="logOut.php" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Log
+                                    out</a>
+                            </li>
+                        </ul>
                     </div>
+
                 </div>
             </nav>
             <div class="w-full flex flex-row justify-between p-4">
@@ -105,16 +121,25 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class=" text-center border-b  border-[#2c7fd2]">
-                            <td class=" w-1/3">1</td>
-                            <td class=" w-1/3">Programación</td>
-                            <td class=" w-1/3">100</td>
-                        </tr>
-                        <tr class=" text-center border-b  border-[#2c7fd2]">
-                            <td class=" w-1/3">2</td>
-                            <td class=" w-1/3">Psicologia</td>
-                            <td class=" w-1/3">100</td>
-                        </tr>
+
+                        <?php
+                        $query = "SELECT * FROM usuarios INNER JOIN usuario_curso on usuarios.id_usuario=usuario_curso.id_usuario INNER JOIN cursos on usuario_curso.id_curso = cursos.id_curso WHERE usuarios.id_usuario='$idAlumno';";
+                        $resultado = $mysqli->query($query);
+
+                        while ($fila = $resultado->fetch_assoc()) {
+                            $idCurso = $fila["id_curso"];
+                            $nombreCurso = $fila["nombre_curso"];
+                            $calificacion = $fila["calificacion_usuario_curso"];
+                        ?>
+                            <tr class=" text-center border-b  border-[#2c7fd2]">
+                                <td class=" w-1/3"><?= $idCurso ?></td>
+                                <td class=" w-1/3"><?= $nombreCurso ?></td>
+                                <td class=" w-1/3"><?= $calificacion ?></td>
+                            </tr>
+                        <?php
+                        }
+
+                        ?>
                     </tbody>
                 </table>
             </div>
